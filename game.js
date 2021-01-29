@@ -1,7 +1,10 @@
 
 buttonColours = ["red", "blue", "green", "yellow"];
 
+// computer generated pattern
 gamePattern = [];
+
+// the pattern a user clicks
 userClickedPattern = [];
 
 var level = 0;
@@ -27,11 +30,13 @@ $(".btn").on("click", function() {
     checkAnswer(userClickedPattern.length - 1);
 });
 
-
+// runs to add a colour to the computer generated sequence
 function nextSequence() {
 
+    // reset user clicked pattern every level
     userClickedPattern = [];
 
+    // increase level
     level += 1;
     $("h1").text("Level " + level);
 
@@ -52,20 +57,25 @@ function nextSequence() {
 
 }
 
+// plays sound specified by name
 function playSound(name) {
     var audio = new Audio("sounds/" + name + ".mp3");
     audio.play();
 }
 
+// updates class type to button for animation
 function animatePress(currentColour) {
     $("#" + currentColour).addClass("pressed");
     setTimeout(function(){ $("#" + currentColour).removeClass("pressed"); }, 100);
 }
 
+// checks user's button choice
+// param: index of array of last button selection
 function checkAnswer(i) {
+    // if the specified index is equal to the expected --> success
     if (userClickedPattern[i] === gamePattern[i]) {
-        console.log("success");
-
+        // given success --> once the user clicks number of buttons needed
+        // add nextSequence
         if (userClickedPattern.length === gamePattern.length) {
             setTimeout(function() {
                 nextSequence();
@@ -74,18 +84,19 @@ function checkAnswer(i) {
 
     }
     else {
-        console.log("fail");
+
         playSound("wrong");
-
         $("h1").text("Game Over, Press Any Key to Restart");
-        $("body").addClass("game-over");
 
+        $("body").addClass("game-over");
         setTimeout(function(){ $("body").removeClass("game-over"); }, 200);
 
+        // reset game
         startOver();
     }
 }
 
+// reset global variables to reset game
 function startOver() {
     level = 0;
     gamePattern = [];
